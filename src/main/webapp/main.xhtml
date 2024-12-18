@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsp="http://java.sun.com/jsf/facelets">
 <h:head>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css"/>
@@ -81,14 +82,7 @@
                 </h:panelGrid>
                 <br></br>
 
-                <h:inputHidden id="result" value="#{formBean.result}" />
-<!--                <h:inputHidden id="scriptTime" value="#{formBean.scriptTime}" />-->
-<!--                <h:inputHidden id="currentTime" value="#{formBean.currentTime}" />-->
 
-                <!-- Отображение результата -->
-                <!--                <h:outputText value="Result: #{formBean.result}"/>-->
-
-                <!--                <h:outputText id="rValueDisplay" value="Selected R: #{formBean.r}"/>-->
 
             </h:form>
 
@@ -103,14 +97,14 @@
                 </h:form>
 
                 <h:commandButton styleClass="navigation-button" id="checkButton" value="CHECK" action="#{formBean.processSubmit}">
-                    <f:ajax execute="@inputForm" render="table" onevent="handleSubmit"/>
+                    <f:ajax execute="@inputForm" render="table"  onevent="handleSubmit"/>
                 </h:commandButton>
             </h:panelGroup>
         </h:panelGroup>
 
         <h:panelGroup layout="block" style="flex: 0 0 50%; padding: 20px;">
 <!--            <h2 style="color: #ff00c3">результаты</h2>-->
-            <h:dataTable id="table" value="#{formBean.tableData}" var="row" border="1" styleClass="table" style=" width: 80%">
+            <h:dataTable id="table" value="#{dbManagerBean.points}" var="row" border="1" styleClass="table" style=" width: 80%">
                 <h:column styleClass="table-column">
                     <f:facet name="header">X</f:facet>
                     #{row.x}

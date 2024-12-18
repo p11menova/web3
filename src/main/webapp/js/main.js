@@ -20,7 +20,7 @@ window.onload = function () {
         else if (data.status === "success") {
             const x = getX();
             const y = document.getElementById("inputForm:y").value;
-         //   const result = document.getElementById("inputForm:result").value;
+            //const result = document.getElementById("inputForm:result").value;
             const  result = getResult();
 
             if (validateY() && validateR()) {
@@ -40,9 +40,10 @@ window.onload = function () {
     function getResult(){
         const table = document.getElementById("table");
          row = table.rows[1]
-        // console.log(row);
-        // console.log(row.cells[3].textContent.trim());
-        result = row.cells[3].textContent.trim()
+         console.log(row);
+         console.log(row.cells[3].textContent.trim());
+         result = row.cells[3].textContent.trim()
+
         return result === "true";
     }
 

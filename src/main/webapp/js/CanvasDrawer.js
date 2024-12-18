@@ -31,6 +31,7 @@ class CanvasDrawer {
         this.setPointerAtDot(5);
         this.setPointerAtDot(1);
 
+        console.log(this.pointsList)
         this.pointsList.forEach(point => {
             this.drawPoint(point.x.replaceAll(",", "."), point.y.replaceAll(",", "."), point.result)
         })

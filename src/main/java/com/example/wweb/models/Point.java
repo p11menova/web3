@@ -1,23 +1,15 @@
 package com.example.wweb.models;
 
 public class Point {
-    private final float x; // Изменено на float
-    private final float y; // Изменено на float
-    private final int r;
-    private final float scriptTime;
-    private final String currentTime;
-    private final boolean result;
+    private float x;
+    private float y;
+    private int r;
+    private boolean result;
+    private float scriptTime;
+    private String currentTime;
 
-    public Point(float x, float y, int r, boolean result, float scriptTime, String currentTime) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.scriptTime = scriptTime;
-        this.currentTime = currentTime;
-        this.result = result; // Пример вычисления результата
-    }
 
-    // Геттеры
+
     public float getX() {
         return x;
     }
@@ -40,5 +32,28 @@ public class Point {
 
     public boolean getResult() {
         return result;
+    }
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setR(int r) {
+        this.r = r;
+    }
+
+    public void setScriptTime(float scriptTime) {
+        this.scriptTime = scriptTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
     }
 }

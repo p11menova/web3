@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.Serializable;
+
 @Named("errorControllerBean")
 @SessionScoped
 public class ErrorControllerBean implements Serializable {
@@ -19,7 +20,6 @@ public class ErrorControllerBean implements Serializable {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("{\"error\": \"%s\"}".formatted(message));
-
 
             facesContext.responseComplete();
         } catch (IOException e) {
@@ -36,10 +36,19 @@ public class ErrorControllerBean implements Serializable {
     }
 
     public void send500Error(String message) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().setResponseStatus(500);
-        FacesMessage facesMessage = new FacesMessage(
-                FacesMessage.SEVERITY_ERROR, "Internal Server Error", message);
-        facesContext.addMessage(null, facesMessage);
+        try {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+            response.setStatus(500);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"error\": \"%s\"}".formatted(message));
+
+
+            facesContext.responseComplete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
