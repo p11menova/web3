@@ -34,11 +34,11 @@ public class Point {
         return result;
     }
     public void setX(float x) {
-        this.x = x;
+        this.x = (float) (Math.round(x * 1000.0) / 1000.0);
     }
 
     public void setY(float y) {
-        this.y = y;
+        this.y = (float) (Math.round(y * 1000.0) / 1000.0);
     }
 
     public void setR(int r) {

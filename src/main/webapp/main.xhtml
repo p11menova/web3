@@ -11,24 +11,28 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </h:head>
 <h:body>
-    <div class="header" style="background-color: lightsteelblue; padding: 40px">
+    <div class="header" style="background-color: lightsteelblue; padding: 30px">
         <h2 style="text-align: center"> WEB LAB 3</h2>
-        <div style="display: inline-flex; align-items: center;">
-            <h3 style="margin: 0 10px 0 0;">ekaterina pim</h3>
-            <img src="./resources/emojisky.com-5603.png" style="width: 35px; height: 35px;" alt=""> </img>
+        <div class="header-div" style="justify-content: space-between; display: flex">
+            <h3 style="margin: 0 10px 0 0; ">ekaterina pim
+                <img src="./resources/emojisky.com-5603.png" style="width: 35px; height: 35px;" alt=""> </img>
+            </h3>
+            <h3 style="text-align: right">variant 88</h3>
         </div>
-        <h3 style="text-align: right">variant 88</h3>
     </div>
 
-    <h:panelGroup layout="block"
-                  style="display: flex; justify-content: space-between; align-items: start; width: 100%;">
-        <h:panelGroup layout="block" style="flex: 0 0 50%; text-align: center; padding: 20px;">
-            <h:form style="margin-left:30px" id="inputForm">
+    <h:panelGroup
+                  style="display: flex;  justify-content: space-between;  width: 100%;">
+        <h:panelGroup layout="block" style="flex: 0 0 50%;text-align: center; padding: 20px;">
+            <h:form id="inputForm">
 
-                <canvas id="canvas" width="400px" height="400px" ></canvas>
+                <canvas id="canvas" width="550px" height="550px" ></canvas>
                 <br></br>
+                <div style="display:flex; justify-content: space-around; vertical-align: center">
+                    <span style="display: table-column">
                 <h:outputLabel for="x">выберите Х:</h:outputLabel>
-                <h:selectOneRadio name="x" id="x" value="#{formBean.x}" style="text-align: center; margin: 0 auto; width: 50%">
+
+                <h:selectOneRadio name="x" id="x" value="#{formBean.x}" style="text-align: center; margin: auto auto; width: 50%">
                     <f:selectItem itemLabel="-4" itemValue="-4"/>
                     <f:selectItem itemLabel="-3" itemValue="-3"/>
                     <f:selectItem itemLabel="-2" itemValue="-2"/>
@@ -42,18 +46,21 @@
                     <f:ajax listener="#{formBean.setX}" render="x" />
 
                 </h:selectOneRadio>
-                <br></br>
+                    </span>
 
                 <!-- Поле для ввода y -->
-                <h:outputLabel for="y">введите Y:   </h:outputLabel>
+                    <span style="display: inline-block; margin-right: 90px">
+                    <h:outputLabel for="y">введите Y:   </h:outputLabel>
+                        <br></br>
                 <h:inputText id="y" value="#{formBean.y}" maxlength="7">
                     <f:ajax listener="#{formBean.setY}" render="y" />
                 </h:inputText>
+                    </span>
 
-                <br/><br/>
+                <span>
+                     <h:outputLabel for="r">выберите R:</h:outputLabel>
+                <h:panelGrid id="r" columns="10" styleClass="r-links">
 
-                <h:panelGrid id="r" columns="11" styleClass="r-links">
-                    <h:outputLabel for="r">выберите R:</h:outputLabel>
 
                     <!-- CommandLink 1 -->
                     <h:commandLink value="1" onclick="handleR(1)" action="#{formBean.setR(1)}">
@@ -79,8 +86,13 @@
                     <h:commandLink value="5" onclick="handleR(5)" action="#{formBean.setR(5)}">
                         <f:ajax listener="#{formBean.setR(5)}"/>
                     </h:commandLink>
+
                 </h:panelGrid>
+                    </span>
+                </div>
+
                 <br></br>
+
 
 
 
@@ -102,7 +114,7 @@
             </h:panelGroup>
         </h:panelGroup>
 
-        <h:panelGroup layout="block" style="flex: 0 0 50%; padding: 20px;">
+        <h:panelGroup layout="block" style="flex: 0 0 50%; padding: 20px; align-items: end">
 <!--            <h2 style="color: #ff00c3">результаты</h2>-->
             <h:dataTable id="table" value="#{dbManagerBean.points}" var="row" border="1" styleClass="table" style=" width: 80%">
                 <h:column styleClass="table-column">
@@ -119,7 +131,7 @@
                 </h:column>
                 <h:column styleClass="#{row.result? 'table-column-text-green' : 'table-column-text-red'}">
                     <f:facet name="header">Result</f:facet>
-                    #{row.result}
+                    #{row.result ? "TRUE" : "FALSE"}
                 </h:column>
 
                 <h:column styleClass="table-column">

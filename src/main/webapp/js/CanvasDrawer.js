@@ -1,5 +1,5 @@
 class CanvasDrawer {
-    SIZE = 400;
+    SIZE = 550;
     LINE_WIDTH = 2;
     TEXT_SIZE = 20;
     TEXT_MARGIN = 15;
@@ -7,6 +7,7 @@ class CanvasDrawer {
     COLOR_RED = "#D18189"
     COLOR_GREEN = "#58d263"
     pointsList = [];
+
 
     constructor(sendRequest, validateR, getR) {
         this.canvas = document.getElementById("canvas");
@@ -16,25 +17,20 @@ class CanvasDrawer {
         this.sendRequest = sendRequest;
         this.validateR = validateR;
         this.getR = getR;
-
         this.canvas.addEventListener('click', (event) => this.parseClick(event));
     }
 
-    addPoint(point){
-        this.pointsList.push(point)
-    }
 
-    redrawAll(r=1) {
+
+    redrawAll(r = 1, points = [], radius_scaling = 1) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawGraph(r);
         this.drawAxes();
         this.setPointerAtDot(5);
         this.setPointerAtDot(1);
 
-        console.log(this.pointsList)
-        this.pointsList.forEach(point => {
-            this.drawPoint(point.x.replaceAll(",", "."), point.y.replaceAll(",", "."), point.result)
-        })
+        console.log(points)
+        points.forEach(point => this.drawPoint(point.x, point.y, point.result))
     }
 
     drawAxes() {
@@ -44,22 +40,22 @@ class CanvasDrawer {
     }
 
     drawGraph(r) {
-        const totalPoints = 12;
+        const totalPoints = 16;
         const pointInPixels = this.SIZE / totalPoints;
         this.ctx.fillStyle = "rgba(255,0,195,0.62)";
 
         this.ctx.beginPath();
         this.ctx.moveTo(this.SIZE / 2, this.SIZE / 2);
         this.ctx.lineTo(this.SIZE / 2, this.SIZE / 2 + r * pointInPixels);
-        this.ctx.lineTo(this.SIZE / 2 + (r/2) * pointInPixels, this.SIZE / 2 + r * pointInPixels);
-        this.ctx.lineTo(this.SIZE / 2 + (r/2) * pointInPixels, this.SIZE / 2);
+        this.ctx.lineTo(this.SIZE / 2 + (r / 2) * pointInPixels, this.SIZE / 2 + r * pointInPixels);
+        this.ctx.lineTo(this.SIZE / 2 + (r / 2) * pointInPixels, this.SIZE / 2);
         this.ctx.lineTo(this.SIZE / 2, this.SIZE / 2);
         this.ctx.fill();
 
         this.ctx.beginPath();
         this.ctx.moveTo(this.SIZE / 2, this.SIZE / 2);
-        this.ctx.lineTo(this.SIZE / 2, this.SIZE / 2 + r /2 * pointInPixels);
-        this.ctx.lineTo(this.SIZE / 2 - r/2 * pointInPixels, this.SIZE / 2);
+        this.ctx.lineTo(this.SIZE / 2, this.SIZE / 2 + r / 2 * pointInPixels);
+        this.ctx.lineTo(this.SIZE / 2 - r / 2 * pointInPixels, this.SIZE / 2);
         this.ctx.lineTo(this.SIZE / 2, this.SIZE / 2);
         this.ctx.fill();
 
@@ -67,10 +63,10 @@ class CanvasDrawer {
         this.ctx.arc(
             this.SIZE / 2,
             this.SIZE / 2,
-            r / 2* pointInPixels,
+            r / 2 * pointInPixels,
 
             Math.PI,
-            Math.PI/2,
+            Math.PI / 2,
             true
         );
         this.ctx.moveTo(this.SIZE / 2, this.SIZE / 2);
@@ -81,7 +77,7 @@ class CanvasDrawer {
     }
 
     setPointerAtDot(max_r = 5) {
-        const totalPoints = 12;
+        const totalPoints = 16;
         const pointInPixels = this.SIZE / totalPoints;
         this.ctx.textAlign = "center";
         this.ctx.textBaseline = "middle";
@@ -119,7 +115,7 @@ class CanvasDrawer {
         this.ctx.fillStyle = success
             ? this.COLOR_GREEN
             : this.COLOR_RED;
-        const totalPoints = 12;
+        const totalPoints = 16;
         const pointInPixels = this.SIZE / totalPoints;
         this.ctx.beginPath();
         this.ctx.arc(
@@ -135,16 +131,17 @@ class CanvasDrawer {
         this.ctx.lineWidth = 1.5
         this.ctx.arc(
             this.SIZE / 2 + pointInPixels * x,
-            this.SIZE / 2 -  y * pointInPixels,
+            this.SIZE / 2 - y * pointInPixels,
             5,
             0,
             Math.PI * 2
         )
         this.ctx.stroke();
     }
-    drawBOOM(x, y){
+
+    drawBOOM(x, y) {
         console.log("dra boom")
-        const totalPoints = 12;
+        const totalPoints = 16;
         const pointInPixels = this.SIZE / totalPoints;
         this.ctx.beginPath();
         const boomImage = new Image();
@@ -157,7 +154,8 @@ class CanvasDrawer {
                 90,
                 90
             );
-        }}
+        }
+    }
 
     parseClick(event) {
         console.log(this.validateR, this.getR, this.sendRequest)
@@ -167,8 +165,8 @@ class CanvasDrawer {
         const clickX = event.clientX - rect.left; // x position in canvas
         const clickY = event.clientY - rect.top;  // y position in canvas
 
-        let graphX = (clickX - this.SIZE / 2 -15 ) / (this.SIZE / 12); // scale to graph unit
-        let graphY = -(clickY - this.SIZE / 2 - 15) / (this.SIZE / 12); // invert y-axis
+        let graphX = (clickX - this.SIZE / 2 - 15) / (this.SIZE / 16); // scale to graph unit
+        let graphY = -(clickY - this.SIZE / 2 - 15) / (this.SIZE / 16); // invert y-axis
 
         graphX = parseFloat(graphX.toFixed(3))
         graphY = parseFloat(graphY.toFixed(3))

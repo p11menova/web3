@@ -7,21 +7,22 @@
 
 </h:head>
 <h:body onload="drawClock()">
-  <div class="header" style="background-color: lightsteelblue; padding: 40px">
+  <div class="header" style="background-color: lightsteelblue; padding: 30px">
     <h2 style="text-align: center"> WEB LAB 3</h2>
-    <div style="display: inline-flex; align-items: center;">
-      <h3 style="margin: 0 10px 0 0;">ekaterina pim</h3>
-      <img src="./resources/emojisky.com-5603.png" style="width: 35px; height: 35px;" alt=""> </img>
+    <div class="header-div" style="justify-content: space-between; display: flex">
+      <h3 style="margin: 0 10px 0 0; ">ekaterina pim
+        <img src="./resources/emojisky.com-5603.png" style="width: 35px; height: 35px;" alt=""> </img>
+      </h3>
+      <h3 style="text-align: right">variant 88</h3>
     </div>
-    <h3 style="text-align: right">variant 88</h3>
   </div>
 
-  <div style="text-align: center; padding: 20px">
+  <div style="text-align: center; padding: 20px; margin-top: 30px;">
     <canvas id="clockCanvas" width="450px" height="450px"/>
     <script src="js/clock.js"> </script>
   </div>
 
-  <h:form style="text-align: center; padding: 20px">
+  <h:form style="text-align: center; padding: 20px; margin-top: 30px">
     <h:commandButton styleClass="navigation-button" value="GO" outcome="go-to-main"
                      action="main.xhtml"/>
   </h:form>

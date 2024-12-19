@@ -1,33 +1,37 @@
 window.onload = function () {
     canvas = document.getElementById("canvas");
     const canvasDrawer = new CanvasDrawer(sendRequest, validateR, getR);
+    console.log("Я ВЕСЬ ТАКОЙ ПЕРЕЗАГРУЗИЛСЯ")
 
     window.canvasDrawer = canvasDrawer;
-    window.currentR = null;
+
+    canvasDrawer.redrawAll(sessionStorage.getItem("R") ? parseInt(sessionStorage.getItem("R")) : 1, getPoints());
+
+
 
     window.handleR = function (value) {
         console.log("im into handle r")
-        console.log("Выбрано значение R: " + value);
-        currentR = value;
-        canvasDrawer.redrawAll(parseInt(value));
+
+        sessionStorage.setItem("R", value);
+        canvasDrawer.redrawAll(value, getPoints( ));
+
     };
     window.handleSubmit = function (data) {
         console.log(data)
         console.log(data.responseCode)
         if (data.responseCode === 400) {
             alert(JSON.parse(data.responseText).error)
-        }
-        else if (data.status === "success") {
+        } else if (data.status === "success") {
             const x = getX();
             const y = document.getElementById("inputForm:y").value;
             //const result = document.getElementById("inputForm:result").value;
-            const  result = getResult();
+            const result = getResult();
 
             if (validateY() && validateR()) {
-                console.log("got some values:", x, y, currentR, result);
+                console.log("got some values:", x, y, sessionStorage.getItem("R"), result);
                 canvasDrawer.drawPoint(x, y, result);
-                canvasDrawer.addPoint({"x": x, "y": y, "result": result})
             }
+
         }
 
     }
@@ -37,18 +41,17 @@ window.onload = function () {
         return selectedRadio ? selectedRadio.value : null;
     }
 
-    function getResult(){
+    function getResult() {
         const table = document.getElementById("table");
-         row = table.rows[1]
-         console.log(row);
-         console.log(row.cells[3].textContent.trim());
-         result = row.cells[3].textContent.trim()
+        row = table.rows[1]
+        console.log(row);
+        console.log(row.cells[3].textContent.trim());
+        result = row.cells[3].textContent.trim()
 
-        return result === "true";
+        return result === "TRUE";
     }
 
 
-    canvasDrawer.redrawAll(1);
 
 
     const yText = document.getElementById("inputForm:y");
@@ -91,7 +94,7 @@ window.onload = function () {
         });
     });
 
-    function sendRequest(x,y,r) {
+    function sendRequest(x, y, r) {
         checkClick([
             {
                 "x": x,
@@ -100,19 +103,37 @@ window.onload = function () {
             }
         ])
     }
-    function processError(response){
+
+    function processError(response) {
         alert(JSON.parse(data.responseText).error)
     }
 
+    function getPoints() {
+        const table = document.getElementById("table");
+        let points = []
+        for (let i = 1; i < table.rows.length; i++) {
+            row = table.rows[i]
+                let rad_scl =  sessionStorage.getItem("R") ? sessionStorage.getItem("R") / parseInt(row.cells[2].textContent.trim()) : 1
+                points.push({
+                    "x": parseFloat(row.cells[0].textContent.trim().replaceAll(",", ".")) * rad_scl,
+                    "y": parseFloat(row.cells[1].textContent.trim().replaceAll(",", ".")) * rad_scl,
+                    "result": row.cells[3].textContent.trim() === "TRUE"
+                })
+            }
+
+        return points
+
+    }
+
     function validateR() {
-        if (currentR == null) {
+        if (sessionStorage.getItem("R") == null) {
             alert("ВЫБЕРИТЕ РАДИУС пж)")
         }
         return true;
     }
 
     function getR() {
-        return currentR;
+        return sessionStorage.getItem("R");
     }
 
 }

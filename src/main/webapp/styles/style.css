@@ -7,6 +7,7 @@
 }
 
 
+
 #input-container {
     padding-top: 20px;
     width: 35%;
@@ -141,9 +142,9 @@ body {
     border: 1px solid #ccc; /* Рамка для визуального различия */
     border-radius: 5px;
 }
-.r-links{
-    margin-left: 200px;
-}
+/*.r-links{*/
+/*    margin-left0px;*/
+/*}*/
 .r-links a{
     margin-right: 11px; /* Добавляем отступы между ссылками */
     display: flex; /* Используем Flexbox для более гибкого управления */
