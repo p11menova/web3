@@ -27,12 +27,20 @@ public class FormBean implements Serializable {
     public FormBean(RequestHandlerBean requestHandlerBean) {
         this.requestHandlerBean = requestHandlerBean;
     }
+
     private float x = 0;
     private float y = 0;
     private int r = 0;
+    private float x_from_canvas = -100; // unreachable value
+
+    private float y_from_canvas = -100;
+
     //boolean result;
 
-    public FormBean(){};
+    public FormBean() {
+    }
+
+    ;
 
     public FormBean(float x, float y, int r) {
         this.x = x;
@@ -64,27 +72,49 @@ public class FormBean implements Serializable {
     public void setR(int r) {
         this.r = r;
     }
-//    public boolean isResult() {
-//        return result;
-//    }
-//
-//    public void setResult(boolean result) {
-//        logger.info("да я обожаю добавлять результаты в форму:"+result);
-//        this.result = result;
-//    }
 
-    public void processSubmit() {
-
-        logger.info("button CHECK was clicked\n CURRENT VALUES:" + x + " " + y + " " + r);
-
-        requestHandlerBean.handleRequest(x, y, r);
-
+    public float getX_from_canvas() {
+        return x_from_canvas;
     }
 
+    public float getY_from_canvas() {
+        return y_from_canvas;
+    }
 
+    public void setX_from_canvas(float x_from_canvas) {
+        this.x_from_canvas = x_from_canvas;
+    }
 
+    public void setY_from_canvas(float y_from_canvas) {
+        this.y_from_canvas = y_from_canvas;
+    }
 
+    public void clearX_from_canvas() {
+        this.x_from_canvas = -100;
+    }
 
+    public void clearY_from_canvas() {
+        this.y_from_canvas = -100;
+    }
 
+    public void processSubmit() {
+        logger.info("button CHECK was clicked");
+        if (x_from_canvas > -100 && y_from_canvas > -100) {
+            logger.info("got values from JS x:" + x_from_canvas + " y:" + y_from_canvas);
+            float x1 = x_from_canvas;
+            float y1 = y_from_canvas;
+
+            clearX_from_canvas();
+            clearY_from_canvas();
+
+            requestHandlerBean.handleRequest(x1, y1, getR());
+
+        } else {
+            logger.info("got values from input form:" + x + " " + y + " " + r);
+            logger.info(x_from_canvas + " " + y_from_canvas);
+            requestHandlerBean.handleRequest(x, y, r);
+        }
+
+    }
 
 }

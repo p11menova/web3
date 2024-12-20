@@ -25,4 +25,7 @@ public class DBManagerBean implements Serializable {
     public List<Point> getPoints() {
         return points;
     }
+    public void clear(){
+        points.clear();
+    }
 }

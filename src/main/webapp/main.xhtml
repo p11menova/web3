@@ -10,9 +10,10 @@
     <script src="js/validation.js"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </h:head>
+
 <h:body>
     <div class="header" style="background-color: lightsteelblue; padding: 30px">
-        <h2 style="text-align: center"> WEB LAB 3</h2>
+        <h2 style="text-align: center">WEB LAB 3</h2>
         <div class="header-div" style="justify-content: space-between; display: flex">
             <h3 style="margin: 0 10px 0 0; ">ekaterina pim
                 <img src="./resources/emojisky.com-5603.png" style="width: 35px; height: 35px;" alt=""> </img>
@@ -22,17 +23,20 @@
     </div>
 
     <h:panelGroup
-                  style="display: flex;  justify-content: space-between;  width: 100%;">
+            style="display: flex;  justify-content: space-between;  width: 100%;">
         <h:panelGroup layout="block" style="flex: 0 0 50%;text-align: center; padding: 20px;">
             <h:form id="inputForm">
 
-                <canvas id="canvas" width="550px" height="550px" ></canvas>
+
+                <canvas id="canvas" width="550px" height="550px"></canvas>
+
                 <br></br>
                 <div style="display:flex; justify-content: space-around; vertical-align: center">
                     <span style="display: table-column">
                 <h:outputLabel for="x">выберите Х:</h:outputLabel>
 
-                <h:selectOneRadio name="x" id="x" value="#{formBean.x}" style="text-align: center; margin: auto auto; width: 50%">
+                <h:selectOneRadio name="x" id="x" value="#{formBean.x}"
+                                  style="text-align: center; margin: auto auto; width: 50%">
                     <f:selectItem itemLabel="-4" itemValue="-4"/>
                     <f:selectItem itemLabel="-3" itemValue="-3"/>
                     <f:selectItem itemLabel="-2" itemValue="-2"/>
@@ -43,39 +47,37 @@
                     <f:selectItem itemLabel="3" itemValue="3"/>
                     <f:selectItem itemLabel="4" itemValue="4"/>
 
-                    <f:ajax listener="#{formBean.setX}" render="x" />
+                    <f:ajax listener="#{formBean.setX}" render="x"/>
 
                 </h:selectOneRadio>
                     </span>
 
-                <!-- Поле для ввода y -->
+                    <!-- Поле для ввода y -->
                     <span style="display: inline-block; margin-right: 90px">
                     <h:outputLabel for="y">введите Y:   </h:outputLabel>
                         <br></br>
                 <h:inputText id="y" value="#{formBean.y}" maxlength="7">
-                    <f:ajax listener="#{formBean.setY}" render="y" />
+                    <f:ajax listener="#{formBean.setY}" render="y"/>
                 </h:inputText>
                     </span>
 
-                <span>
+                    <span>
                      <h:outputLabel for="r">выберите R:</h:outputLabel>
                 <h:panelGrid id="r" columns="10" styleClass="r-links">
 
-
                     <!-- CommandLink 1 -->
                     <h:commandLink value="1" onclick="handleR(1)" action="#{formBean.setR(1)}">
-                        <f:ajax  listener="#{formBean.setR(1)}"/>
+                        <f:ajax listener="#{formBean.setR(1)}"/>
                     </h:commandLink>
-
 
                     <!-- CommandLink 2 -->
                     <h:commandLink value="2" onclick="handleR(2)" action="#{formBean.setR(2)}">
-                        <f:ajax  listener="#{formBean.setR(2)}"/>
+                        <f:ajax listener="#{formBean.setR(2)}"/>
                     </h:commandLink>
 
                     <!-- CommandLink 3 -->
                     <h:commandLink value="3" onclick="handleR(3)" action="#{formBean.setR(3)}">
-                        <f:ajax  listener="#{formBean.setR(3)}"/>
+                        <f:ajax listener="#{formBean.setR(3)}"/>
                     </h:commandLink>
 
                     <!-- CommandLink 4 -->
@@ -86,7 +88,6 @@
                     <h:commandLink value="5" onclick="handleR(5)" action="#{formBean.setR(5)}">
                         <f:ajax listener="#{formBean.setR(5)}"/>
                     </h:commandLink>
-
                 </h:panelGrid>
                     </span>
                 </div>
@@ -94,63 +95,81 @@
                 <br></br>
 
 
+                <h:inputText id="x-from-canvas" type="hidden" value="#{formBean.x_from_canvas}">
+                    <f:ajax event="change"/>
+                    <!--                    <f:ajax listener="#{formBean.setX_from_canvas}" render="x-from-canvas" />-->
+                </h:inputText>
+                <h:inputText id="y-from-canvas" type="hidden" value="#{formBean.y_from_canvas}">
+                    <f:ajax event="change"/>
+                    <!--                    <f:ajax listener="#{formBean.setY_from_canvas}" render="y-from-canvas" />-->
+                </h:inputText>
 
 
             </h:form>
 
 
             <h:panelGroup layout="block"
-                          style="flex: 0 0 50%; display: flex; justify-content: flex-start; align-items: center; gap: 100px;margin-left: 20%">
-
+                          style=" display: flex; justify-content:space-around; align-items: center; gap: 10%">
                 <h:form id="go-back-form">
-                    <h:commandButton styleClass="navigation-button" value="GO BACK" outcome="go-to-index"
-                                     action="index.xhtml">
-                    </h:commandButton>
+                    <h:commandButton styleClass="navigation-button"  value="GO BACK" id="go-back" outcome="go-to-index"
+                                     action="index.xhtml"/>
                 </h:form>
 
-                <h:commandButton styleClass="navigation-button" id="checkButton" value="CHECK" action="#{formBean.processSubmit}">
-                    <f:ajax execute="@inputForm" render="table"  onevent="handleSubmit"/>
+                <h:commandButton styleClass="navigation-button" id="clearButton" value="CLEAR"
+                                 action="#{dbManagerBean.clear}">
+                    <f:ajax render="table" />
                 </h:commandButton>
+
+                <h:commandButton styleClass="navigation-button" id="checkButton" value="CHECK"
+                                 action="#{formBean.processSubmit}">
+                    <f:ajax execute="@inputForm" render="table" onevent="handleSubmit"/>
+                </h:commandButton>
+
+
+
+
             </h:panelGroup>
         </h:panelGroup>
 
-        <h:panelGroup layout="block" style="flex: 0 0 50%; padding: 20px; align-items: end">
-<!--            <h2 style="color: #ff00c3">результаты</h2>-->
-            <h:dataTable id="table" value="#{dbManagerBean.points}" var="row" border="1" styleClass="table" style=" width: 80%">
-                <h:column styleClass="table-column">
-                    <f:facet name="header">X</f:facet>
-                    #{row.x}
-                </h:column>
-                <h:column styleClass="table-column">
-                    <f:facet name="header">Y</f:facet>
-                    #{row.y}
-                </h:column>
-                <h:column styleClass="table-column">
-                    <f:facet name="header">R</f:facet>
-                    #{row.r}
-                </h:column>
-                <h:column styleClass="#{row.result? 'table-column-text-green' : 'table-column-text-red'}">
-                    <f:facet name="header">Result</f:facet>
-                    #{row.result ? "TRUE" : "FALSE"}
-                </h:column>
 
-                <h:column styleClass="table-column">
-                    <f:facet name="header">
-                        <h:outputText value="Script Time" />
-                    </f:facet>
-                    <h:outputText value="#{row.scriptTime}ms" />
-                </h:column>
-                <!-- Новый столбец для currentTime -->
-                <h:column styleClass="table-column">
-                    <f:facet name="header">
-                        <h:outputText value="Current Time" />
-                    </f:facet>
-                    <h:outputText value="#{row.currentTime}" />
-                </h:column>
-            </h:dataTable>
-        </h:panelGroup>
+    <h:panelGroup layout="block" style="flex: 0 0 50%; padding: 20px; align-items: end">
+        <!--            <h2 style="color: #ff00c3">результаты</h2>-->
+        <h:dataTable id="table" value="#{dbManagerBean.points}" var="row" border="1" styleClass="table"
+                     style=" width: 80%">
+            <h:column styleClass="table-column">
+                <f:facet name="header">X</f:facet>
+                #{row.x}
+            </h:column>
+            <h:column styleClass="table-column">
+                <f:facet name="header">Y</f:facet>
+                #{row.y}
+            </h:column>
+            <h:column styleClass="table-column">
+                <f:facet name="header">R</f:facet>
+                #{row.r}
+            </h:column>
+            <h:column styleClass="#{row.result? 'table-column-text-green' : 'table-column-text-red'}">
+                <f:facet name="header">Result</f:facet>
+                #{row.result ? "TRUE" : "FALSE"}
+            </h:column>
+
+            <h:column styleClass="table-column">
+                <f:facet name="header">
+                    <h:outputText value="Script Time"/>
+                </f:facet>
+                <h:outputText value="#{row.scriptTime}ms"/>
+            </h:column>
+            <!-- Новый столбец для currentTime -->
+            <h:column styleClass="table-column">
+                <f:facet name="header">
+                    <h:outputText value="Current Time"/>
+                </f:facet>
+                <h:outputText value="#{row.currentTime}"/>
+            </h:column>
+        </h:dataTable>
     </h:panelGroup>
 
+    </h:panelGroup>
 </h:body>
 
 </html>

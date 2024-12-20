@@ -6,23 +6,22 @@ class CanvasDrawer {
     TEXT_LINE_HEIGHT = 3;
     COLOR_RED = "#D18189"
     COLOR_GREEN = "#58d263"
-    pointsList = [];
 
 
-    constructor(sendRequest, validateR, getR) {
+    constructor(sendRequest, validateR) {
         this.canvas = document.getElementById("canvas");
         this.ctx = this.canvas.getContext("2d");
         this.ctx.font = `${this.TEXT_SIZE}px Soyuz Grotesk`
 
         this.sendRequest = sendRequest;
         this.validateR = validateR;
-        this.getR = getR;
+
         this.canvas.addEventListener('click', (event) => this.parseClick(event));
     }
 
 
 
-    redrawAll(r = 1, points = [], radius_scaling = 1) {
+    redrawAll(r = 1, points = []) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawGraph(r);
         this.drawAxes();
@@ -112,6 +111,9 @@ class CanvasDrawer {
 
     drawPoint(x, y, success) {
         console.log("draw point")
+        console.log(x," ",y, success)
+        x = parseFloat(x)
+        y = parseFloat(y)
         this.ctx.fillStyle = success
             ? this.COLOR_GREEN
             : this.COLOR_RED;
@@ -158,20 +160,21 @@ class CanvasDrawer {
     }
 
     parseClick(event) {
-        console.log(this.validateR, this.getR, this.sendRequest)
+        console.log(this.validateR, this.sendRequest)
         if (!this.validateR()) return;
 
         const rect = this.canvas.getBoundingClientRect();
         const clickX = event.clientX - rect.left; // x position in canvas
         const clickY = event.clientY - rect.top;  // y position in canvas
 
-        let graphX = (clickX - this.SIZE / 2 - 15) / (this.SIZE / 16); // scale to graph unit
-        let graphY = -(clickY - this.SIZE / 2 - 15) / (this.SIZE / 16); // invert y-axis
+        let graphX = (clickX - this.SIZE / 2 ) / (this.SIZE / 16); // scale to graph unit
+        let graphY = -(clickY - this.SIZE / 2 ) / (this.SIZE / 16); // invert y-axis
 
         graphX = parseFloat(graphX.toFixed(3))
         graphY = parseFloat(graphY.toFixed(3))
 
-        this.sendRequest(graphX, graphY, this.getR());
+        console.log(graphX, graphY)
+        this.sendRequest(graphX, graphY);
     }
 
 }

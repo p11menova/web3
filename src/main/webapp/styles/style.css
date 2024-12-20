@@ -101,7 +101,7 @@ body {
 .navigation-button {
     font-family: "Arial", serif;
     font-weight: bold;
-    width: 250px;
+    width: 200px;
     height: 100px;
     color: black;
     font-size: large;
@@ -109,6 +109,7 @@ body {
     border: 1px solid lightsteelblue;
     background-color: transparent;
 }
+
 
 .navigation-button:hover {
     font-family: "Arial", serif;

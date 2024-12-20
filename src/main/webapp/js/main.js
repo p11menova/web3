@@ -1,44 +1,57 @@
 window.onload = function () {
-    canvas = document.getElementById("canvas");
-    const canvasDrawer = new CanvasDrawer(sendRequest, validateR, getR);
+    const canvasDrawer = new CanvasDrawer(sendRequest, validateR);
     console.log("Я ВЕСЬ ТАКОЙ ПЕРЕЗАГРУЗИЛСЯ")
 
     window.canvasDrawer = canvasDrawer;
 
     canvasDrawer.redrawAll(sessionStorage.getItem("R") ? parseInt(sessionStorage.getItem("R")) : 1, getPoints());
 
-
-
     window.handleR = function (value) {
         console.log("im into handle r")
 
         sessionStorage.setItem("R", value);
-        canvasDrawer.redrawAll(value, getPoints( ));
+        canvasDrawer.redrawAll(value, getPoints());
 
     };
     window.handleSubmit = function (data) {
         console.log(data)
         console.log(data.responseCode)
         if (data.responseCode === 400) {
-            alert(JSON.parse(data.responseText).error)
+            processError(data)
         } else if (data.status === "success") {
             const x = getX();
-            const y = document.getElementById("inputForm:y").value;
-            //const result = document.getElementById("inputForm:result").value;
+            const y = getY();
             const result = getResult();
 
             if (validateY() && validateR()) {
                 console.log("got some values:", x, y, sessionStorage.getItem("R"), result);
-                canvasDrawer.drawPoint(x, y, result);
+                canvasDrawer.drawBOOM(x, y);
+                setTimeout(()=>{
+                    canvasDrawer.redrawAll(parseInt(sessionStorage.getItem("R")), getPoints())
+                }, 300)
             }
-
         }
 
     }
 
     function getX() {
-        const selectedRadio = document.querySelector('input[name="inputForm:x"]:checked');
-        return selectedRadio ? selectedRadio.value : null;
+        const table = document.getElementById("table");
+        row = table.rows[1]
+        console.log(row);
+        console.log(row.cells[0].textContent.trim());
+        x = row.cells[0].textContent.trim()
+        return x;
+
+    }
+    function getY() {
+        const table = document.getElementById("table");
+        row = table.rows[1]
+        console.log(row);
+        console.log(row.cells[1].textContent.trim());
+        y = row.cells[1].textContent.trim()
+
+        return y;
+
     }
 
     function getResult() {
@@ -50,9 +63,6 @@ window.onload = function () {
 
         return result === "TRUE";
     }
-
-
-
 
     const yText = document.getElementById("inputForm:y");
 
@@ -94,17 +104,25 @@ window.onload = function () {
         });
     });
 
-    function sendRequest(x, y, r) {
-        checkClick([
-            {
-                "x": x,
-                "y": y,
-                "r": r
-            }
-        ])
+    document.getElementById("clearButton").addEventListener("click", ()=>{
+
+        canvasDrawer.redrawAll(getR(), [])
+    })
+
+    function sendRequest(x, y) {
+
+        console.log("даа я получил значения из канваса вот они " + x + " "+ y)
+        document.getElementById("inputForm:x-from-canvas").value = x
+        document.getElementById("inputForm:y-from-canvas").value = y;
+
+        document.getElementById('inputForm:x-from-canvas').dispatchEvent(new Event('change'));
+        document.getElementById('inputForm:y-from-canvas').dispatchEvent(new Event('change'))
+
+       document.getElementById("checkButton").click();
+
     }
 
-    function processError(response) {
+    function processError(data) {
         alert(JSON.parse(data.responseText).error)
     }
 
@@ -128,12 +146,12 @@ window.onload = function () {
     function validateR() {
         if (sessionStorage.getItem("R") == null) {
             alert("ВЫБЕРИТЕ РАДИУС пж)")
+            return false;
         }
         return true;
     }
 
-    function getR() {
-        return sessionStorage.getItem("R");
+    function getR(){
+        return sessionStorage.getItem("R") ? parseInt(sessionStorage.getItem("R")) : 1
     }
-
 }
