@@ -1,11 +1,11 @@
 class CanvasDrawer {
     SIZE = 550;
-    LINE_WIDTH = 2;
+    LINE_WIDTH = 1.3;
     TEXT_SIZE = 20;
     TEXT_MARGIN = 15;
     TEXT_LINE_HEIGHT = 3;
-    COLOR_RED = "#D18189"
-    COLOR_GREEN = "#58d263"
+    COLOR_RED = "rgba(191,1,16,0.94)"
+    COLOR_GREEN = "rgb(157,255,43)"
 
 
     constructor(sendRequest, validateR) {
@@ -76,6 +76,9 @@ class CanvasDrawer {
     }
 
     setPointerAtDot(max_r = 5) {
+
+        this.ctx.font = `bold ${this.TEXT_SIZE}px Arial`;
+
         const totalPoints = 16;
         const pointInPixels = this.SIZE / totalPoints;
         this.ctx.textAlign = "center";
@@ -130,7 +133,7 @@ class CanvasDrawer {
         this.ctx.fill();
         this.ctx.beginPath();
         this.ctx.fillStyle = "black"
-        this.ctx.lineWidth = 1.5
+        this.ctx.lineWidth = 0.9
         this.ctx.arc(
             this.SIZE / 2 + pointInPixels * x,
             this.SIZE / 2 - y * pointInPixels,

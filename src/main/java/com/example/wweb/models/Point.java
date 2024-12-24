@@ -1,13 +1,26 @@
 package com.example.wweb.models;
 
-public class Point {
-    private float x;
-    private float y;
-    private int r;
-    private boolean result;
-    private float scriptTime;
-    private String currentTime;
 
+import jakarta.persistence.*;
+
+@Table(name = "points")
+@Entity
+public class Point {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column
+    private float x;
+    @Column
+    private float y;
+    @Column
+    private int r;
+    @Column
+    private boolean result;
+    @Column(name="script_time")
+    private float scriptTime;
+    @Column(name = "cur_time")
+    private String currentTime;
 
 
     public float getX() {
@@ -55,5 +68,17 @@ public class Point {
 
     public void setResult(boolean result) {
         this.result = result;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    @Override
+    public String toString() {
+        return x + " " + y ;
     }
 }
